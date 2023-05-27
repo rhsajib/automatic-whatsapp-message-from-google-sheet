@@ -37,14 +37,12 @@ def text_formated(msgtext, br, name):
 
 
 
-
-
 def send_message(st_info_list, msg, sm_driver):      
     """
     st_info_list : list of dictionaries    
     For istance,     
-    [{'Name': 'Adiba', 'Mobile No': ['1857076652', '1977652550'], 'Last class date': '19', 'Status': 'TRUE'}, 
-    {'Name': 'Israt Jahan Lamia', 'Mobile No': ['1780548574', '1747594785'], 'Last class date': '19', 'Status': 'FALSE'}]      
+    [{'Name': 'Adiba', 'Mobile No': ['0167XXXXXXX', '0167XXXXXXX'], 'Last class date': '19', 'Status': 'TRUE'}, 
+    {'Name': 'Israt Jahan Lamia', 'Mobile No': ['0167XXXXXXX', '0167XXXXXXX'], 'Last class date': '19', 'Status': 'FALSE'}]      
     
     """
         
@@ -65,9 +63,6 @@ def send_message(st_info_list, msg, sm_driver):
 
 
 
-
-
-
 def new_tab(st_name, mob_num, messg, nt_driver):
     phone = '+880' + mob_num[-10:]   
     
@@ -84,7 +79,6 @@ def new_tab(st_name, mob_num, messg, nt_driver):
     
     nt_driver.implicitly_wait(20)
     wait = WebDriverWait(nt_driver, 60)
-
     
     search_box_path = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'           # search box path to input number
     message_box_path = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p'  # message box xpath    
@@ -116,12 +110,9 @@ def new_tab(st_name, mob_num, messg, nt_driver):
                 
             except NoSuchElementException:
                 pass   
-    
-    
+      
     # Close the new tab
     nt_driver.close()
-
-
 
 
 
@@ -140,12 +131,11 @@ def main():
 
         # read worksheet_names.txt file for given worksheet names
         with open('worksheet_names.txt', 'r') as f:               
-            wsl = f.read().split(',')                  # worksheet_names.txt has coma separated worksheet names
-            given_worksheet_names = [i.strip() for i in wsl]
+            wsl = f.read().split(',')                                # worksheet_names.txt has coma separated worksheet names
+            given_worksheet_names = [i.strip() for i in wsl]         # removed extra spaces from worksheet names
 
         # validate given worksheet names
         validated_ws_names = validate_worksheet_names(actual_worksheet_names, given_worksheet_names)
-
 
         if len(validated_ws_names) == 0:
             print('Please enter valid worksheet names inside the worksheet_names.txt file !!!')
@@ -159,14 +149,14 @@ def main():
 
 
             # ChromeOptions should be above webdriver.Chrome()
-            # Because first the options will load then the browser will open
+            # because first the options will load then the browser will open
 
             """ 
 
             # Set up path for whatsapp data
 
             ### for windows OS
-            # CHROME_PROFILE_PATH = 'user-data-dir=C:/Users/Md Yusuf/AppData/Local/Google/Chrome/User Data/Default/'
+            # CHROME_PROFILE_PATH = 'user-data-dir=C:/Users/<PC_name>/AppData/Local/Google/Chrome/User Data/Default/'
 
             ### for mac OS
             CHROME_PROFILE_PATH = 'user-data-dir=Users/sajib/Library/Application Support/Google/Chrome/Default/'  
@@ -190,13 +180,12 @@ def main():
 
             # performing task for every worksheet
             for ws_name in validated_ws_names:
-
-                # worksheet = sheet.get_worksheet(0) 
-                # Assuming you want to access the first worksheet (index 0)
+          
+                # if I want to access the first worksheet (index 0)
+                # worksheet = sheet.get_worksheet(0)
                 worksheet = full_sheet.worksheet(ws_name)
                 data = worksheet.get_all_values()
                 df = pd.DataFrame(data)
-
 
                 # list of student information
                 student_info = get_st_info(df)
@@ -205,7 +194,6 @@ def main():
                     # read message from text file
                     with open('message.txt', 'r') as f:
                         message_body = f.read()
-
 
                     # sending message using send_message function
                     # and returning the chrome driver to quit it at the end of program       
@@ -216,8 +204,4 @@ def main():
 
     except:
         print('Your google sheet URL is not correct !!!')
-
-
-
-
 
