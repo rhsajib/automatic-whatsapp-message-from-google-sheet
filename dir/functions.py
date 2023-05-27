@@ -25,6 +25,7 @@ def get_sheet(url):
 
 
 
+
 def validate_worksheet_names(actual_list, given_list):
     actual_wsheets = [worksheet.title for worksheet in actual_list]
     
@@ -34,6 +35,7 @@ def validate_worksheet_names(actual_list, given_list):
     
     converted_list = [ws for ws in actual_wsheets if ws.strip() in given_list]
     return converted_list
+
 
 
 
@@ -63,12 +65,12 @@ def check_mobile_number(mob_num):
 
 
 
+
 def get_st_info(df):
     with open('date.txt', 'r') as f:
         # date = day i want to consider for present or absent
         date = f.read() 
-        
-    
+            
     # date row of the worksheet
     class_dates = df.loc[2]
     
