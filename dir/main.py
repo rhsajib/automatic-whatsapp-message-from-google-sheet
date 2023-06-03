@@ -4,11 +4,7 @@
 
 import pandas as pd
 import os
-import sys
-# sys.path.append('dir/')
-# import whatsapp
-from functions import get_sheet, validate_worksheet_names, get_last_class_date, check_mobile_number, get_st_info
-
+from .functions import *
 
 
 import selenium
@@ -203,5 +199,5 @@ def main():
             c_driver.quit()
 
     except:
-        print('Your google sheet URL is not correct !!!')
+        print('Your google sheet URL is incorrect or you intentionally closed the chrome driver !!!')
 

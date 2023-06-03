@@ -9,9 +9,7 @@
 
 
 import os
-import sys
-sys.path.append('dir/')
-from main import main
+from dir.main import main
 
 
 if __name__ == '__main__':

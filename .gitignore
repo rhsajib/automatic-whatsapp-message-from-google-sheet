@@ -1,0 +1,6 @@
+Users/
+.ipynb_checkpoints
+credentials_for_me.json
+__pycache__/
+.DS_Store
+app.ipynb

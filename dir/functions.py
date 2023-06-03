@@ -5,8 +5,6 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import os
-import sys
-#sys.path.append('dir/')
 
 
 
