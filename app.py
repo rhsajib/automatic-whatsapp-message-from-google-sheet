@@ -11,7 +11,6 @@
 import os
 from dir.main import main
 
-
 if __name__ == '__main__':
     main()
   

@@ -118,86 +118,86 @@ def main():
     # get google sheet url from user
     url = input('Enter google sheet URL: ')
     
-    try:
-        # get all data from google sheet url
-        full_sheet = get_sheet(url)
+    # get all data from google sheet url
+    full_sheet = get_sheet(url)
 
-        # get name of all worksheets of the spread sheet
-        actual_worksheet_names = full_sheet.worksheets()
+    # get name of all worksheets of the spread sheet
+    actual_worksheet_names = full_sheet.worksheets()
 
-        # read worksheet_names.txt file for given worksheet names
-        with open('worksheet_names.txt', 'r') as f:               
-            wsl = f.read().split(',')                                # worksheet_names.txt has coma separated worksheet names
-            given_worksheet_names = [i.strip() for i in wsl]         # removed extra spaces from worksheet names
+    # read worksheet_names.txt file for given worksheet names
+    with open('worksheet_names.txt', 'r') as f:               
+        wsl = f.read().split(',')                                # worksheet_names.txt has coma separated worksheet names
+        given_worksheet_names = [i.strip() for i in wsl]         # removed extra spaces from worksheet names
 
-        # validate given worksheet names
-        validated_ws_names = validate_worksheet_names(actual_worksheet_names, given_worksheet_names)
+    # validate given worksheet names
+    validated_ws_names = validate_worksheet_names(actual_worksheet_names, given_worksheet_names)
 
-        if len(validated_ws_names) == 0:
-            print('Please enter valid worksheet names inside the worksheet_names.txt file !!!')
+    if len(validated_ws_names) == 0:
+        print('Please enter valid worksheet names inside the worksheet_names.txt file !!!')
 
-        else:
-            # opening chrome driver main window
-            """
-            # whatsapp web will require scan option for login
-            # for auto login we have to use cookies and data of our chrome browser
-            # this can be done using ChromeOptions (it will load data from our previous login to chrome browser)
+    else:
+        # opening chrome driver main window
+        """
+        # whatsapp web will require scan option for login
+        # for auto login we have to use cookies and data of our chrome browser
+        # this can be done using ChromeOptions (it will load data from our previous login to chrome browser)
 
 
-            # ChromeOptions should be above webdriver.Chrome()
-            # because first the options will load then the browser will open
+        # ChromeOptions should be above webdriver.Chrome()
+        # because first the options will load then the browser will open
 
-            """ 
+        """ 
 
-            # Set up path for whatsapp data
+        # Set up path for whatsapp data
 
-            ### for windows OS
-            # CHROME_PROFILE_PATH = 'user-data-dir=C:/Users/<PC_name>/AppData/Local/Google/Chrome/User Data/Default/'
+        ### for windows OS
+        # CHROME_PROFILE_PATH = 'user-data-dir=C:/Users/<PC_name>/AppData/Local/Google/Chrome/User Data/Default/'
 
-            ### for mac OS
-            CHROME_PROFILE_PATH = 'user-data-dir=Users/sajib/Library/Application Support/Google/Chrome/Default/'  
+        ### for mac OS
+        CHROME_PROFILE_PATH = 'user-data-dir=Users/sajib/Library/Application Support/Google/Chrome/Default/'  
 
-            # Set up the Chrome options
-            options = webdriver.ChromeOptions()
-            options.add_argument("start-maximized")
-            options.add_argument(CHROME_PROFILE_PATH)
+        # set up the Chrome options
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument(CHROME_PROFILE_PATH)
 
-            # Set up the Chrome driver
-            driver = webdriver.Chrome(options=options)       
+        # downloaded chrome driver is located in chromedriver folder
+        chrome_driver_path = '/usr/local/bin/chromedriver'
 
-            # Open the webpage in chrome driver
-            driver.get('https://www.google.com/')
+        # set up the Chrome driver
+        driver = webdriver.Chrome(executable_path = chrome_driver_path, options=options)      
 
-            driver.implicitly_wait(10)
-            wait = WebDriverWait(driver, 30)
+        # open the webpage in chrome driver
+        driver.get('https://www.google.com/')
 
-            # selecting the current window as main window
-            main_window = driver.current_window_handle
+        driver.implicitly_wait(10)
+        wait = WebDriverWait(driver, 30)
 
-            # performing task for every worksheet
-            for ws_name in validated_ws_names:
-          
-                # if I want to access the first worksheet (index 0)
-                # worksheet = sheet.get_worksheet(0)
-                worksheet = full_sheet.worksheet(ws_name)
-                data = worksheet.get_all_values()
-                df = pd.DataFrame(data)
+        # selecting the current window as main window
+        main_window = driver.current_window_handle
 
-                # list of student information
-                student_info = get_st_info(df)
+        # performing task for every worksheet
+        for ws_name in validated_ws_names:
+      
+            # if I want to access the first worksheet (index 0)
+            # worksheet = sheet.get_worksheet(0)
+            worksheet = full_sheet.worksheet(ws_name)
+            data = worksheet.get_all_values()
+            df = pd.DataFrame(data)
 
-                if len(student_info) != 0:  
-                    # read message from text file
-                    with open('message.txt', 'r') as f:
-                        message_body = f.read()
+            # list of student information
+            student_info = get_st_info(df)
 
-                    # sending message using send_message function
-                    # and returning the chrome driver to quit it at the end of program       
-                    c_driver = send_message(student_info, message_body, driver)
+            if len(student_info) != 0:  
+                # read message from text file
+                with open('message.txt', 'r') as f:
+                    message_body = f.read()
 
-            # quit chrome driver   
-            c_driver.quit()
+                # sending message using send_message function
+                # and returning the chrome driver to quit it at the end of program       
+                c_driver = send_message(student_info, message_body, driver)
 
-    except:
-        print('Your google sheet URL is incorrect or you intentionally closed the chrome driver !!!')
+        # quit chrome driver   
+        c_driver.quit()
 
+    

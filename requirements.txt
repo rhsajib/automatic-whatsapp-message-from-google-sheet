@@ -1,0 +1,4 @@
+pandas
+selenium
+gspread
+oauth2client
